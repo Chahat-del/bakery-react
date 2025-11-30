@@ -1,4 +1,6 @@
+// src/components/Hero.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -8,21 +10,24 @@ export default function Hero() {
           <h1>Freshly Baked Happiness, Every Day.</h1>
           <p>
             Sweet Crumbs Bakery brings you hand-crafted breads, cakes, and
-            pastries made with love.
+            pastries made with love and the finest ingredients. Perfect for
+            your daily treats and special occasions.
           </p>
           <div className="hero-buttons">
-            <a href="#menu" className="btn primary">
+            {/* 👉 goes to /menu */}
+            <Link to="/menu" className="btn primary">
               View Our Menu
-            </a>
-            <a href="#contact" className="btn secondary">
+            </Link>
+
+            {/* 👉 goes to /contact (different action) */}
+            <Link to="/contact" className="btn secondary">
               Place an Order
-            </a>
+            </Link>
           </div>
         </div>
 
         <div className="hero-image">
           <div className="hero-image-card">
-            {/* later you can add /hero.jpg in public */}
             <img src="/hero.jpg" alt="Bakery cakes" />
           </div>
         </div>

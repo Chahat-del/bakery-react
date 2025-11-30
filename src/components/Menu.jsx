@@ -2,64 +2,72 @@ import React, { useState } from "react";
 import { useCart } from "../CartContext";
 
 const menuItems = [
-  // 🧁 CAKES
+  // 🍰 CAKES
   {
     name: "Classic Chocolate Cake",
     price: "₹650",
     category: "cakes",
-    description: "Rich, moist chocolate sponge with silky dark chocolate ganache.",
+    description: "Rich chocolate sponge with silky ganache.",
     tag: "Best Seller",
+    image: "https://cdn.pixabay.com/photo/2020/03/14/18/55/cake-4937780_1280.jpg",
   },
   {
     name: "Red Velvet Cake",
     price: "₹720",
     category: "cakes",
-    description: "Soft red velvet layers with smooth cream cheese frosting.",
+    description: "Soft red velvet layers with cream cheese frosting.",
     tag: "Premium",
+    image: "https://cdn.pixabay.com/photo/2020/01/16/16/32/red-velvet-4769511_1280.jpg",
   },
   {
     name: "Fresh Fruit Cake",
     price: "₹780",
     category: "cakes",
-    description: "Vanilla sponge loaded with seasonal fruits and light whipped cream.",
+    description: "Vanilla sponge loaded with fresh fruits and cream.",
     tag: "Eggless",
+    image: "https://cdn.pixabay.com/photo/2017/04/01/19/06/cake-2195951_1280.jpg",
   },
   {
     name: "Black Forest Cake",
     price: "₹700",
     category: "cakes",
-    description: "Chocolate sponge, cherries, whipped cream and chocolate shavings.",
+    description: "Chocolate sponge, cherries and whipped cream.",
     tag: "Classic",
+    image: "https://cdn.pixabay.com/photo/2015/05/05/15/05/black-forest-cake-754437_1280.jpg",
   },
 
-  // 🥐 PASTRIES & CUPCAKES
+  // 🧁 PASTRIES
   {
     name: "Vanilla Cupcakes (6 pcs)",
     price: "₹280",
     category: "pastries",
-    description: "Light vanilla cupcakes with buttercream frosting and sprinkles.",
+    description: "Soft vanilla cupcakes with buttercream.",
     tag: "Party Pack",
+    image: "https://cdn.pixabay.com/photo/2017/03/17/18/13/cupcakes-2153813_1280.jpg",
   },
   {
     name: "Chocolate Truffle Pastry",
     price: "₹120",
     category: "pastries",
-    description: "Single-serve pastry with rich chocolate truffle layers.",
+    description: "Rich chocolate truffle pastry.",
     tag: "Trending",
+    image: "https://cdn.pixabay.com/photo/2017/08/07/21/13/chocolate-cake-2602082_1280.jpg",
   },
   {
     name: "Croissants (4 pcs)",
     price: "₹220",
     category: "pastries",
-    description: "Flaky, buttery croissants baked fresh every morning.",
-    tag: "New",
+    description: "Flaky, buttery croissants.",
+    tag: "Fresh",
+    image: "https://cdn.pixabay.com/photo/2016/12/10/14/57/croissant-1898198_1280.jpg",
   },
   {
     name: "Blueberry Muffins (4 pcs)",
     price: "₹260",
     category: "pastries",
-    description: "Soft muffins filled with juicy blueberries.",
-    tag: "Tea-time",
+    description: "Soft muffins filled with blueberries.",
+    tag: "Tea-Time",
+    image: "https://cdn.pixabay.com/photo/2017/05/07/08/56/muffins-2292733_1280.jpg",
   },
 
   // 🍞 BREADS
@@ -67,22 +75,25 @@ const menuItems = [
     name: "Garlic Herb Bread",
     price: "₹120",
     category: "breads",
-    description: "Soft pull-apart bread with garlic butter and mixed herbs.",
+    description: "Fresh garlic and herb flavoured bread.",
     tag: "Fresh Daily",
+    image: "https://cdn.pixabay.com/photo/2015/03/26/09/54/bread-690039_1280.jpg",
   },
   {
     name: "Multigrain Loaf",
     price: "₹90",
     category: "breads",
-    description: "Healthy multigrain bread with seeds and grains.",
+    description: "Healthy multigrain bread.",
     tag: "Healthy",
+    image: "https://cdn.pixabay.com/photo/2016/03/05/19/02/bread-1238987_1280.jpg",
   },
   {
     name: "Masala Pav (6 pcs)",
     price: "₹80",
     category: "breads",
-    description: "Mumbai-style soft pav with a light masala flavour.",
-    tag: "Best with Tea",
+    description: "Soft pav with light masala flavour.",
+    tag: "Street Style",
+    image: "https://cdn.pixabay.com/photo/2015/04/08/13/13/buns-712661_1280.jpg",
   },
 
   // 🍪 COOKIES
@@ -90,31 +101,35 @@ const menuItems = [
     name: "Choco Chip Cookies (10 pcs)",
     price: "₹180",
     category: "cookies",
-    description: "Crunchy cookies loaded with chocolate chips.",
+    description: "Cookies loaded with chocolate chips.",
     tag: "Kids' Favourite",
+    image: "https://cdn.pixabay.com/photo/2017/05/07/08/56/cookies-2292732_1280.jpg",
   },
   {
     name: "Butter Nankhatai (12 pcs)",
     price: "₹160",
     category: "cookies",
-    description: "Traditional Indian shortbread cookies that melt in your mouth.",
+    description: "Traditional Indian butter shortbread cookies.",
     tag: "Traditional",
+    image: "https://cdn.pixabay.com/photo/2019/07/28/10/17/cookies-4366525_1280.jpg",
   },
 
-  // 🥤 BEVERAGES
+  // ☕ BEVERAGES
   {
     name: "Cold Coffee (500 ml)",
     price: "₹150",
     category: "beverages",
-    description: "Thick, café-style cold coffee with ice and cream.",
+    description: "Cafe-style cold coffee.",
     tag: "Best with Cake",
+    image: "https://cdn.pixabay.com/photo/2014/12/15/13/40/coffee-569363_1280.jpg",
   },
   {
     name: "Hot Chocolate",
     price: "₹130",
     category: "beverages",
-    description: "Warm, rich hot chocolate topped with mini marshmallows.",
+    description: "Warm hot chocolate topped with cream.",
     tag: "Winter Special",
+    image: "https://cdn.pixabay.com/photo/2017/01/06/19/15/hot-chocolate-1958657_1280.jpg",
   },
 ];
 
@@ -129,6 +144,7 @@ const categories = [
 
 export default function Menu() {
   const [filter, setFilter] = useState("all");
+  const [feedback, setFeedback] = useState("");
   const { addToCart } = useCart();
 
   const filtered =
@@ -136,15 +152,22 @@ export default function Menu() {
       ? menuItems
       : menuItems.filter((item) => item.category === filter);
 
+  const handleAdd = (item) => {
+    addToCart(item);
+    setFeedback(`${item.name} added to cart`);
+    setTimeout(() => setFeedback(""), 2000);
+  };
+
   return (
-    <section className="menu" id="menu">
+    <section className="menu">
       <div className="container">
         <h2 className="section-title">Our Signature Menu</h2>
         <p className="section-subtitle">
-          From birthday cakes to evening chai-time snacks, we’ve got you covered.
+          Choose from our freshly baked cakes, pastries, breads and more.
         </p>
 
-        {/* Category filter buttons */}
+        {feedback && <p className="cart-feedback">{feedback}</p>}
+
         <div className="menu-filters">
           {categories.map((cat) => (
             <button
@@ -157,10 +180,13 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* Menu cards */}
         <div className="menu-grid">
           {filtered.map((item, idx) => (
             <div className="menu-card" key={idx}>
+              <div className="menu-card-image">
+                <img src={item.image} alt={item.name} />
+              </div>
+
               <div className="menu-card-header">
                 <div>
                   <div className="menu-card-title">{item.name}</div>
@@ -173,15 +199,12 @@ export default function Menu() {
 
               <div className="menu-card-meta">
                 <span className="menu-card-category">
-                  {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                  {item.category.charAt(0).toUpperCase() +
+                    item.category.slice(1)}
                 </span>
               </div>
 
-              <button
-                className="btn small"
-                onClick={() => addToCart(item)}
-                style={{ marginTop: "0.5rem" }}
-              >
+              <button className="btn small" onClick={() => handleAdd(item)}>
                 Add to Cart
               </button>
             </div>

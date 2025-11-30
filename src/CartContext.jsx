@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 const CartContext = createContext();
 
@@ -7,7 +12,26 @@ export function useCart() {
 }
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]);
+  // Load from localStorage on first render
+  const [items, setItems] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem("sweetcrumbs-cart");
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to parse cart from storage", e);
+      return [];
+    }
+  });
+
+  // Save to localStorage whenever items change
+  useEffect(() => {
+    try {
+      localStorage.setItem("sweetcrumbs-cart", JSON.stringify(items));
+    } catch (e) {
+      console.error("Failed to save cart", e);
+    }
+  }, [items]);
 
   const addToCart = (item) => {
     setItems((prev) => {
@@ -43,4 +67,5 @@ export function CartProvider({ children }) {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
+
 
