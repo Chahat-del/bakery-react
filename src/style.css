@@ -327,7 +327,7 @@ body {
   opacity: 0.8;
 }
 
-/* GALLERY */
+/* GALLERY - Add this to your style.css file, replacing the existing .gallery styles */
 
 .gallery {
   padding: 3.5rem 0;
@@ -336,18 +336,54 @@ body {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-top: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid #ffd4c3;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+  height: 280px;
+  background: #fff;
 }
 
 .gallery-item img {
   width: 100%;
-  border-radius: 18px;
-  border: 1px solid #ffd4c3;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  
+  .gallery-item {
+    height: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .gallery-item {
+    height: 260px;
+  }
+}
 /* CONTACT SECTION */
 
 .contact {
