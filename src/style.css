@@ -458,3 +458,17 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.cart-feedback {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+.cart-badge {
+  margin-left: 0.3rem;
+  background: #ff6b6b;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 0.4rem;
+  font-size: 0.7rem;
+}

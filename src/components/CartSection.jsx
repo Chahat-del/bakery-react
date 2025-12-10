@@ -10,7 +10,7 @@ export default function CartSection() {
         <h2>Your Cart</h2>
 
         {items.length === 0 ? (
-          <p>Your cart is empty. Add some treats from the menu!</p>
+          <p>Your cart is empty. Add something from the menu!</p>
         ) : (
           <>
             <ul className="cart-list">

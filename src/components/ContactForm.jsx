@@ -15,7 +15,6 @@ export default function ContactForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // later this will be sent to backend; for now just demo
     setStatus("Message sent! (Demo only, not stored yet.)");
     setForm({ name: "", email: "", phone: "", orderType: "", message: "" });
   };
