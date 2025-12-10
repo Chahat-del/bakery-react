@@ -9,7 +9,7 @@ const menuItems = [
     category: "cakes",
     description: "Rich chocolate sponge with silky ganache.",
     tag: "Best Seller",
-    image: "https://cdn.pixabay.com/photo/2020/03/14/18/55/cake-4937780_1280.jpg",
+    image: "https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg",
   },
   {
     name: "Red Velvet Cake",
@@ -17,7 +17,7 @@ const menuItems = [
     category: "cakes",
     description: "Soft red velvet layers with cream cheese frosting.",
     tag: "Premium",
-    image: "https://cdn.pixabay.com/photo/2020/01/16/16/32/red-velvet-4769511_1280.jpg",
+    image: "https://sugargeekshow.com/wp-content/uploads/2018/01/classic-red-velvet-cake-recipe-11.jpg",
   },
   {
     name: "Fresh Fruit Cake",
@@ -25,7 +25,7 @@ const menuItems = [
     category: "cakes",
     description: "Vanilla sponge loaded with fresh fruits and cream.",
     tag: "Eggless",
-    image: "https://cdn.pixabay.com/photo/2017/04/01/19/06/cake-2195951_1280.jpg",
+    image: "https://tse3.mm.bing.net/th/id/OIP.AIUm5KJ_ymkRC92B68XsVQHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Black Forest Cake",
@@ -33,7 +33,7 @@ const menuItems = [
     category: "cakes",
     description: "Chocolate sponge, cherries and whipped cream.",
     tag: "Classic",
-    image: "https://cdn.pixabay.com/photo/2015/05/05/15/05/black-forest-cake-754437_1280.jpg",
+    image: "https://thesuburbansoapbox.com/wp-content/uploads/2023/04/Black-Forest-Cake-16-of-29-1365x2048.jpg",
   },
 
   // 🧁 PASTRIES
@@ -43,7 +43,7 @@ const menuItems = [
     category: "pastries",
     description: "Soft vanilla cupcakes with buttercream.",
     tag: "Party Pack",
-    image: "https://cdn.pixabay.com/photo/2017/03/17/18/13/cupcakes-2153813_1280.jpg",
+    image: "https://tse1.mm.bing.net/th/id/OIP.6J8ycEupZQnO9mIiTYy5UAHaLH?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Chocolate Truffle Pastry",
@@ -51,7 +51,7 @@ const menuItems = [
     category: "pastries",
     description: "Rich chocolate truffle pastry.",
     tag: "Trending",
-    image: "https://cdn.pixabay.com/photo/2017/08/07/21/13/chocolate-cake-2602082_1280.jpg",
+    image: "https://punjabbakers.com/wp-content/uploads/2024/05/PUNJABS-CAKE-n-BAKE-CHOCOLATE-TRUFFLE-PASTRY-2-1.jpg",
   },
   {
     name: "Croissants (4 pcs)",
@@ -59,7 +59,7 @@ const menuItems = [
     category: "pastries",
     description: "Flaky, buttery croissants.",
     tag: "Fresh",
-    image: "https://cdn.pixabay.com/photo/2016/12/10/14/57/croissant-1898198_1280.jpg",
+    image: "https://tse1.mm.bing.net/th/id/OIP.HZOu-ELIVeLAwVkpuLxCAQHaGK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Blueberry Muffins (4 pcs)",
@@ -67,7 +67,7 @@ const menuItems = [
     category: "pastries",
     description: "Soft muffins filled with blueberries.",
     tag: "Tea-Time",
-    image: "https://cdn.pixabay.com/photo/2017/05/07/08/56/muffins-2292733_1280.jpg",
+    image: "https://www.inspiredtaste.net/wp-content/uploads/2016/10/Easy-Blueberry-Muffin-Recipe-1-1200.jpg",
   },
 
   // 🍞 BREADS
@@ -77,7 +77,7 @@ const menuItems = [
     category: "breads",
     description: "Fresh garlic and herb flavoured bread.",
     tag: "Fresh Daily",
-    image: "https://cdn.pixabay.com/photo/2015/03/26/09/54/bread-690039_1280.jpg",
+    image: "https://vignette4.wikia.nocookie.net/laurainthekitchen/images/4/4c/GB5.jpg/revision/latest?cb=20140608054550",
   },
   {
     name: "Multigrain Loaf",
@@ -85,7 +85,7 @@ const menuItems = [
     category: "breads",
     description: "Healthy multigrain bread.",
     tag: "Healthy",
-    image: "https://cdn.pixabay.com/photo/2016/03/05/19/02/bread-1238987_1280.jpg",
+    image: "https://www.ihearteating.com/wp-content/uploads/2014/05/Multigrain-bread-5-800-1.jpg",
   },
   {
     name: "Masala Pav (6 pcs)",
@@ -93,7 +93,7 @@ const menuItems = [
     category: "breads",
     description: "Soft pav with light masala flavour.",
     tag: "Street Style",
-    image: "https://cdn.pixabay.com/photo/2015/04/08/13/13/buns-712661_1280.jpg",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWAL3g6FLBUmWxrHFO4UmfN-oy0sE_La9VjPtG5WJh3B33MAic6VznFc0Hy38drQZkhmAGEn56oc6XzGCyrzQj3kmvsBSuxzGIPLgGyxp-NQXfYLU7fj0rjsFarhZoU8jqBrKExiZ3wzU/s1600/1353.jpg",
   },
 
   // 🍪 COOKIES
@@ -103,7 +103,7 @@ const menuItems = [
     category: "cookies",
     description: "Cookies loaded with chocolate chips.",
     tag: "Kids' Favourite",
-    image: "https://cdn.pixabay.com/photo/2017/05/07/08/56/cookies-2292732_1280.jpg",
+    image: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg",
   },
   {
     name: "Butter Nankhatai (12 pcs)",
@@ -111,7 +111,7 @@ const menuItems = [
     category: "cookies",
     description: "Traditional Indian butter shortbread cookies.",
     tag: "Traditional",
-    image: "https://cdn.pixabay.com/photo/2019/07/28/10/17/cookies-4366525_1280.jpg",
+    image: "https://www.ruchiskitchen.com/wp-content/uploads/2015/08/Nankhatai-recipe-7-2-681x1024.jpg",
   },
 
   // ☕ BEVERAGES
@@ -121,7 +121,7 @@ const menuItems = [
     category: "beverages",
     description: "Cafe-style cold coffee.",
     tag: "Best with Cake",
-    image: "https://cdn.pixabay.com/photo/2014/12/15/13/40/coffee-569363_1280.jpg",
+    image: "https://rachnas-kitchen.com/wp-content/uploads/2017/07/cold-coffee-2.jpg",
   },
   {
     name: "Hot Chocolate",
@@ -129,7 +129,7 @@ const menuItems = [
     category: "beverages",
     description: "Warm hot chocolate topped with cream.",
     tag: "Winter Special",
-    image: "https://cdn.pixabay.com/photo/2017/01/06/19/15/hot-chocolate-1958657_1280.jpg",
+    image: "https://feelgoodfoodie.net/wp-content/uploads/2021/11/how-to-make-hot-chocolate-7-1024x1536.jpg",
   },
 ];
 
