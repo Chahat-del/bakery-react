@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+// src/AuthContext.jsx
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -8,16 +9,58 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (name, email) => {
-    setUser({ name, email });
+  // Check for existing session on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+      const savedUser = localStorage.getItem("user");
+
+      if (token && savedUser) {
+        try {
+          // Verify token is still valid by calling /api/auth/me
+          const response = await fetch("http://localhost:5000/api/auth/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else {
+            // Token expired or invalid
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+          }
+        } catch (error) {
+          console.error("Auth check failed:", error);
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+        }
+      }
+
+      setLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  const login = (name, email, userId) => {
+    const userData = { name, email, id: userId };
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("sweetcrumbs-cart"); // Clear cart on logout
   };
 
-  const value = { user, login, logout };
+  const value = { user, login, logout, loading };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

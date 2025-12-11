@@ -15,8 +15,8 @@ function createToken(user) {
   );
 }
 
-// POST /api/auth/register
-router.post("/register", async (req, res) => {
+// POST /api/auth/signup
+router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -42,6 +42,7 @@ router.post("/register", async (req, res) => {
     const token = createToken(user);
 
     res.status(201).json({
+      message: "Account created successfully",
       token,
       user: {
         id: user._id,
@@ -51,7 +52,7 @@ router.post("/register", async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("Register error:", err);
+    console.error("Signup error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });

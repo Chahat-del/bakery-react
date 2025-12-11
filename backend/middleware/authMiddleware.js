@@ -1,14 +1,14 @@
 // backend/middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
 
-function authMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
+module.exports = function (req, res, next) {
+  const authHeader = req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json({ message: "No token, authorization denied" });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -16,8 +16,6 @@ function authMiddleware(req, res, next) {
     req.userRole = decoded.role;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Token is not valid" });
   }
-}
-
-module.exports = authMiddleware;
+};
