@@ -1,36 +1,50 @@
 // backend/models/Order.js
 const mongoose = require("mongoose");
 
-const orderItemSchema = new mongoose.Schema(
-  {
-    name: String,
-    price: Number, // store numeric price (e.g. 650)
-    qty: Number,
-  },
-  { _id: false }
-);
-
 const orderSchema = new mongoose.Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false, // allow guest orders for now
+      required: true,
     },
-    items: [orderItemSchema],
+    orderNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    items: [
+      {
+        name: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        price: { type: Number, required: true },
+      },
+    ],
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+    },
+    gst: {
+      type: Number,
+      required: true,
+    },
     total: {
       type: Number,
       required: true,
     },
+    couponCode: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "completed"],
+      enum: ["pending", "processing", "completed", "cancelled"],
       default: "pending",
     },
-    contactName: String,
-    contactEmail: String,
-    contactPhone: String,
-    message: String,
   },
   { timestamps: true }
 );

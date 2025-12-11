@@ -5,58 +5,79 @@ const auth = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// POST /api/orders/create
-router.post("/create", auth, async (req, res) => {
+// POST /api/orders - Create new order (Protected)
+router.post("/", auth, async (req, res) => {
   try {
-    const { items, total, contactName, contactEmail, contactPhone, message } =
-      req.body;
+    const { items, subtotal, discount, gst, total, couponCode } = req.body;
 
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ message: "Order must have items" });
+    // Validate required fields
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
     }
+
+    // Generate order number
+    const orderCount = await Order.countDocuments();
+    const orderNumber = `ORD-${Date.now()}-${orderCount + 1}`;
 
     const order = await Order.create({
-      user: req.userId || null,
+      userId: req.userId,
+      orderNumber,
       items,
+      subtotal,
+      discount: discount || 0,
+      gst,
       total,
-      contactName,
-      contactEmail,
-      contactPhone,
-      message,
+      couponCode: couponCode || null,
+      status: "pending"
     });
 
-    res.status(201).json(order);
-  } catch (err) {
-    console.error("Create order error:", err);
-    res.status(500).json({ message: "Server error" });
+    console.log("✅ Order created:", order._id);
+
+    res.status(201).json({
+      message: "Order placed successfully",
+      order: {
+        _id: order._id,
+        orderNumber: order.orderNumber,
+        total: order.total,
+        createdAt: order.createdAt
+      }
+    });
+  } catch (error) {
+    console.error("💥 Order creation error:", error);
+    res.status(500).json({ message: "Failed to place order" });
   }
 });
 
-// GET /api/orders/mine
-router.get("/mine", auth, async (req, res) => {
+// GET /api/orders - Get user's orders (Protected)
+router.get("/", auth, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.userId }).sort("-createdAt");
-    res.json(orders);
-  } catch (err) {
-    console.error("Get my orders error:", err);
-    res.status(500).json({ message: "Server error" });
+    const orders = await Order.find({ userId: req.userId })
+      .sort({ createdAt: -1 });
+
+    res.json({ orders });
+  } catch (error) {
+    console.error("💥 Fetch orders error:", error);
+    res.status(500).json({ message: "Failed to fetch orders" });
   }
 });
 
-// GET /api/orders/all (admin)
-router.get("/all", auth, async (req, res) => {
+// GET /api/orders/:id - Get single order (Protected)
+router.get("/:id", auth, async (req, res) => {
   try {
-    if (req.userRole !== "admin") {
-      return res.status(403).json({ message: "Admin only" });
+    const order = await Order.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
     }
 
-    const orders = await Order.find().populate("user", "name email");
-    res.json(orders);
-  } catch (err) {
-    console.error("Get all orders error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.json({ order });
+  } catch (error) {
+    console.error("💥 Fetch order error:", error);
+    res.status(500).json({ message: "Failed to fetch order" });
   }
 });
 
 module.exports = router;
-
