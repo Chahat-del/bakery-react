@@ -9,13 +9,18 @@ connectDB();
 
 const app = express();
 
-// middlewares
-app.use(
-  cors({
-    origin: "http://localhost:5173", // your Vite frontend
-    credentials: true,
-  })
-);
+// Allow ALL origins for debugging
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
+
+// Add request logging
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
+
 app.use(express.json());
 
 // routes
