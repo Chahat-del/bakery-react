@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useAuth } from "../AuthContext";
+import PaymentGateway from "./PaymentGateway";
 
 export default function CartSection() {
   const { items, total, removeFromCart, clearCart, updateQuantity } = useCart();
@@ -10,6 +11,7 @@ export default function CartSection() {
   const navigate = useNavigate();
   
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState("");
@@ -84,7 +86,11 @@ export default function CartSection() {
   const gst = Math.round(finalTotal * 0.05); // 5% GST
   const grandTotal = finalTotal + gst;
 
-  const handlePlaceOrder = async () => {
+  const handleProceedToPayment = () => {
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = async (paymentDetails) => {
     setLoading(true);
     
     try {
@@ -105,7 +111,8 @@ export default function CartSection() {
           discount: discount,
           gst: gst,
           total: grandTotal,
-          couponCode: appliedCoupon?.code || null
+          couponCode: appliedCoupon?.code || null,
+          paymentDetails: paymentDetails
         })
       });
 
@@ -122,10 +129,12 @@ export default function CartSection() {
           total: grandTotal,
           date: new Date().toLocaleString(),
           customerName: user.name || "Guest",
-          customerEmail: user.email || ""
+          customerEmail: user.email || "",
+          paymentDetails
         });
         setShowBill(true);
         setShowCheckout(false);
+        setShowPayment(false);
         clearCart();
         setAppliedCoupon(null);
       } else {
@@ -137,6 +146,10 @@ export default function CartSection() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
   };
 
   const printBill = () => {
@@ -173,6 +186,16 @@ export default function CartSection() {
               <div className="bill-row">
                 <span>Email:</span>
                 <span>{orderData.customerEmail}</span>
+              </div>
+              <div className="bill-row">
+                <span>Payment Method:</span>
+                <span className="payment-badge">
+                  {orderData.paymentDetails.method.toUpperCase()}
+                </span>
+              </div>
+              <div className="bill-row">
+                <span>Transaction ID:</span>
+                <span className="transaction-id">{orderData.paymentDetails.transactionId}</span>
               </div>
             </div>
 
@@ -221,12 +244,16 @@ export default function CartSection() {
                 <strong>Grand Total:</strong>
                 <strong>₹{orderData.total}</strong>
               </div>
+              <div className="bill-row payment-status">
+                <span>Payment Status:</span>
+                <span className="status-paid">✅ PAID</span>
+              </div>
             </div>
 
             <div className="bill-footer">
               <p>✨ Thank you for your order! ✨</p>
+              <p>Your payment was successful!</p>
               <p>Please visit us again!</p>
-              <p className="bill-id">Transaction ID: {orderData.orderId}</p>
             </div>
 
             <div className="bill-actions no-print">
@@ -241,6 +268,21 @@ export default function CartSection() {
               </button>
             </div>
           </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Payment Gateway Screen
+  if (showPayment) {
+    return (
+      <section className="cart" id="cart">
+        <div className="container">
+          <PaymentGateway
+            amount={grandTotal}
+            onPaymentSuccess={handlePaymentSuccess}
+            onCancel={handlePaymentCancel}
+          />
         </div>
       </section>
     );
@@ -371,10 +413,10 @@ export default function CartSection() {
                 <div className="checkout-buttons">
                   <button 
                     className="btn primary" 
-                    onClick={handlePlaceOrder}
+                    onClick={handleProceedToPayment}
                     disabled={loading}
                   >
-                    {loading ? "Processing..." : `Place Order - ₹${grandTotal}`}
+                    Proceed to Payment - ₹{grandTotal} →
                   </button>
                   <button 
                     className="btn secondary" 
