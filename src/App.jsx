@@ -10,6 +10,7 @@ import CartPage from "./pages/CartPage";
 import ContactPage from "./pages/ContactPage";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
+import OrderHistoryPage from "./pages/OrderHistoryPage"; // ← ADD THIS
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/orders" element={<OrderHistoryPage />} /> {/* ← ADD THIS */}
       </Routes>
     </>
   );

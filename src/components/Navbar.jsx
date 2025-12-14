@@ -31,10 +31,11 @@ export default function Navbar() {
         </button>
 
         <div className={`nav-links ${showMenu ? "show" : ""}`}>
-          <Link to="/">Home</Link>
-          <Link to="/menu">Menu</Link>
-          <Link to="/cart">
-            Cart
+  <Link to="/">Home</Link>
+  <Link to="/menu">Menu</Link>
+  {user && <Link to="/orders">📦 My Orders</Link>}
+  <Link to="/cart">
+    Cart
             {items.length > 0 && (
               <span className="cart-badge">{items.length}</span>
             )}
