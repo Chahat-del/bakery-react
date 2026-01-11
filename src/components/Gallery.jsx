@@ -15,7 +15,7 @@ const galleryImages = [
     alt: "Freshly baked bread"
   },
   {
-    url: "https://hannahrecipes.com/wp-content/uploads/2024/02/croissant_donut_img3.jpg",
+    url: "https://tse4.mm.bing.net/th/id/OIP.SNO-xDmHkzwCMz8ISzkn6QHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
     alt: "Colorful cupcakes"
   },
   {
