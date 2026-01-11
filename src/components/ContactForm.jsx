@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // API Base URL
-const API_URL = process.env.REACT_APP_API_URL || "https://bakery-react-production.up.railway.app";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function ContactForm() {
   const [status, setStatus] = useState("");
