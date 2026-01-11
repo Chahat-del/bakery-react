@@ -7,6 +7,9 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
+// API Base URL - uses environment variable or defaults to Railway URL
+const API_URL = process.env.REACT_APP_API_URL || "https://bakery-react-production.up.railway.app";
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +23,7 @@ export function AuthProvider({ children }) {
       if (token && savedUser) {
         try {
           // Verify token is still valid by calling /api/auth/me
-          const response = await fetch("http://localhost:5000/api/auth/me", {
+          const response = await fetch(`${API_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

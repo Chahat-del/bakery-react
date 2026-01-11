@@ -5,6 +5,9 @@ import { useCart } from "../CartContext";
 import { useAuth } from "../AuthContext";
 import PaymentGateway from "./PaymentGateway";
 
+// API Base URL
+const API_URL = process.env.REACT_APP_API_URL || "https://bakery-react-production.up.railway.app";
+
 export default function CartSection() {
   const { items, total, removeFromCart, clearCart, updateQuantity } = useCart();
   const { user } = useAuth();
@@ -101,7 +104,7 @@ export default function CartSection() {
     
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/orders", {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

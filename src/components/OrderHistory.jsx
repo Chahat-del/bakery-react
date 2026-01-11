@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 
+// API Base URL
+const API_URL = process.env.REACT_APP_API_URL || "https://bakery-react-production.up.railway.app";
+
 export default function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,7 @@ export default function OrderHistory() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/orders", {
+      const response = await fetch(`${API_URL}/api/orders`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }

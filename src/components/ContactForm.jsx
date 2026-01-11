@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+// API Base URL
+const API_URL = process.env.REACT_APP_API_URL || "https://bakery-react-production.up.railway.app";
+
 export default function ContactForm() {
   const [status, setStatus] = useState("");
   const [form, setForm] = useState({
@@ -54,7 +57,7 @@ export default function ContactForm() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:5000/api/feedback/submit', {
+      const response = await fetch(`${API_URL}/api/feedback/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
