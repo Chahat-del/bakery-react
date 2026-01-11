@@ -19,7 +19,6 @@ export default function CartSection() {
   const [showBill, setShowBill] = useState(false);
   const [orderData, setOrderData] = useState(null);
 
-  // Available coupons for different items
   const availableCoupons = {
     "CAKE10": { discount: 10, applicableTo: ["cake", "pastry"], description: "₹10 off on Cakes & Pastries" },
     "BREAD20": { discount: 20, applicableTo: ["bread", "bun"], description: "₹20 off on Breads" },
@@ -29,14 +28,12 @@ export default function CartSection() {
   };
 
   const handleProceedToCheckout = () => {
-    // Check if user is logged in
     const token = localStorage.getItem("token");
     if (!token || !user) {
       alert("⚠️ Please login first to proceed with checkout!");
       navigate("/auth");
       return;
     }
-    
     setShowCheckout(true);
   };
 
@@ -66,7 +63,6 @@ export default function CartSection() {
       return appliedCoupon.discount;
     }
 
-    // Calculate discount only on applicable items
     let discount = 0;
     items.forEach(item => {
       const itemNameLower = item.name.toLowerCase();
@@ -81,10 +77,20 @@ export default function CartSection() {
     return discount;
   };
 
-  const discount = calculateDiscount();
-  const finalTotal = Math.max(0, total - discount);
-  const gst = Math.round(finalTotal * 0.05); // 5% GST
-  const grandTotal = finalTotal + gst;
+  const calculateAutomaticDiscount = () => {
+    if (total > 1000) {
+      return Math.round(total * 0.10);
+    }
+    return 0;
+  };
+
+  const couponDiscount = calculateDiscount();
+  const automaticDiscount = calculateAutomaticDiscount();
+  const totalDiscount = couponDiscount + automaticDiscount;
+  
+  const subtotalAfterDiscount = Math.max(0, total - totalDiscount);
+  const gst = Math.round(subtotalAfterDiscount * 0.05);
+  const grandTotal = subtotalAfterDiscount + gst;
 
   const handleProceedToPayment = () => {
     setShowPayment(true);
@@ -108,7 +114,7 @@ export default function CartSection() {
             price: item.priceValue
           })),
           subtotal: total,
-          discount: discount,
+          discount: totalDiscount,
           gst: gst,
           total: grandTotal,
           couponCode: appliedCoupon?.code || null,
@@ -124,7 +130,9 @@ export default function CartSection() {
           orderNumber: data.order.orderNumber,
           items,
           subtotal: total,
-          discount,
+          couponDiscount,
+          automaticDiscount,
+          totalDiscount,
           gst,
           total: grandTotal,
           date: new Date().toLocaleString(),
@@ -156,7 +164,35 @@ export default function CartSection() {
     window.print();
   };
 
-  // Bill Component
+  //start//
+  const specialOffersStyles = {
+  specialOffersSection: {
+    background: 'linear-gradient(#ff9a9e, #fad0c4)',
+    padding: '15px',
+    margin: '20px 0',
+    color: 'black',
+    textAlign: 'center',
+    fontFamily: 'Arial',
+    borderRadius: '10px'
+  },
+  heading: {
+    fontSize: '20px',
+    marginBottom: '10px'
+  },
+  christmasText: {
+    fontSize: '16px',
+    margin: '5px 0',
+    color: 'darkred'
+  },
+  newYearText: {
+    fontSize: '16px',
+    margin: '5px 0',
+    color: 'darkgreen'
+  }
+};
+
+  //end//
+
   if (showBill && orderData) {
     return (
       <section className="cart" id="cart">
@@ -229,10 +265,22 @@ export default function CartSection() {
                 <span>Subtotal:</span>
                 <span>₹{orderData.subtotal}</span>
               </div>
-              {orderData.discount > 0 && (
+              {orderData.couponDiscount > 0 && (
                 <div className="bill-row discount">
-                  <span>Discount Applied:</span>
-                  <span>- ₹{orderData.discount}</span>
+                  <span>Coupon Discount:</span>
+                  <span>- ₹{orderData.couponDiscount}</span>
+                </div>
+              )}
+              {orderData.automaticDiscount > 0 && (
+                <div className="bill-row discount">
+                  <span>🎉 Special Discount (10% on orders &gt; ₹1000):</span>
+                  <span>- ₹{orderData.automaticDiscount}</span>
+                </div>
+              )}
+              {orderData.totalDiscount > 0 && (
+                <div className="bill-row discount total-discount">
+                  <strong>Total Discount:</strong>
+                  <strong>- ₹{orderData.totalDiscount}</strong>
                 </div>
               )}
               <div className="bill-row">
@@ -253,6 +301,9 @@ export default function CartSection() {
             <div className="bill-footer">
               <p>✨ Thank you for your order! ✨</p>
               <p>Your payment was successful!</p>
+              {orderData.automaticDiscount > 0 && (
+                <p>🎊 You saved ₹{orderData.automaticDiscount} with our special discount!</p>
+              )}
               <p>Please visit us again!</p>
             </div>
 
@@ -273,7 +324,6 @@ export default function CartSection() {
     );
   }
 
-  // Payment Gateway Screen
   if (showPayment) {
     return (
       <section className="cart" id="cart">
@@ -292,6 +342,25 @@ export default function CartSection() {
     <section className="cart" id="cart">
       <div className="container">
         <h2>Your Cart</h2>
+
+        {/* start */}
+        
+<div style={specialOffersStyles.specialOffersSection}>
+  <h3 style={specialOffersStyles.heading}>
+    About Christmas and New Year Special Offers
+  </h3>
+
+  <p style={specialOffersStyles.christmasText}>
+    Christmas discount flat 10% off above ₹1000
+  </p>
+
+  <p style={specialOffersStyles.newYearText}>
+    New Year offers on selected products
+  </p>
+</div>
+
+
+        {/* end */}
 
         {items.length === 0 ? (
           <div className="empty-cart">
@@ -325,6 +394,18 @@ export default function CartSection() {
               ))}
             </div>
 
+            {total > 1000 && (
+              <div className="discount-notification">
+                <p>🎉 Congratulations! You've earned a 10% discount on orders over ₹1000!</p>
+                <p>You're saving ₹{automaticDiscount} on this order!</p>
+              </div>
+            )}
+            {total > 800 && total <= 1000 && (
+              <div className="discount-alert">
+                <p>💰 Add ₹{1000 - total} more to get 10% off your entire order!</p>
+              </div>
+            )}
+
             {!showCheckout ? (
               <div className="cart-summary">
                 <div className="cart-total">
@@ -344,7 +425,6 @@ export default function CartSection() {
               <div className="checkout-section">
                 <h3>Checkout</h3>
                 
-                {/* Available Coupons */}
                 <div className="coupons-info">
                   <h4>🎟️ Available Coupons:</h4>
                   <div className="coupon-list">
@@ -357,7 +437,6 @@ export default function CartSection() {
                   </div>
                 </div>
 
-                {/* Apply Coupon */}
                 <div className="coupon-section">
                   <h4>Apply Coupon Code</h4>
                   <div className="coupon-input-group">
@@ -381,22 +460,33 @@ export default function CartSection() {
                   {couponError && <p className="error-message">{couponError}</p>}
                   {appliedCoupon && (
                     <p className="success-message">
-                      ✅ Coupon "{appliedCoupon.code}" applied! Saved ₹{discount}
+                      ✅ Coupon "{appliedCoupon.code}" applied! Saved ₹{couponDiscount}
                     </p>
                   )}
                 </div>
 
-                {/* Bill Summary */}
                 <div className="bill-summary-preview">
                   <h4>Order Summary</h4>
                   <div className="summary-row">
                     <span>Subtotal:</span>
                     <span>₹{total}</span>
                   </div>
-                  {discount > 0 && (
+                  {couponDiscount > 0 && (
                     <div className="summary-row discount">
-                      <span>Discount:</span>
-                      <span>- ₹{discount}</span>
+                      <span>Coupon Discount:</span>
+                      <span>- ₹{couponDiscount}</span>
+                    </div>
+                  )}
+                  {automaticDiscount > 0 && (
+                    <div className="summary-row discount special-discount">
+                      <span>🎉 Special Discount (10%):</span>
+                      <span>- ₹{automaticDiscount}</span>
+                    </div>
+                  )}
+                  {totalDiscount > 0 && (
+                    <div className="summary-row total-discount-row">
+                      <strong>Total Savings:</strong>
+                      <strong>- ₹{totalDiscount}</strong>
                     </div>
                   )}
                   <div className="summary-row">

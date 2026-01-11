@@ -69,6 +69,15 @@ const menuItems = [
     tag: "Tea-Time",
     image: "https://www.inspiredtaste.net/wp-content/uploads/2016/10/Easy-Blueberry-Muffin-Recipe-1-1200.jpg",
   },
+   {
+    name: "sample",
+    price: "₹260",
+    category: "pastries",
+    description: "Soft muffins filled with blueberries.",
+    tag: "Tea-Time",
+    image: "https://www.inspiredtaste.net/wp-content/uploads/2016/10/Easy-Blueberry-Muffin-Recipe-1-1200.jpg",
+  },
+
 
   // 🍞 BREADS
   {
