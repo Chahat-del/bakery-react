@@ -10,11 +10,16 @@ connectDB();
 const app = express();
 
 // Allow ALL origins for debugging
-app.use(cors({
-  origin: true,
-  credentials: true,
-}));
+const cors = require('cors');
 
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://bakery-react-28y3orfne-chahat-khandelwals-projects.vercel.app',
+    /\.vercel\.app$/  // allows all vercel preview URLs
+  ],
+  credentials: true
+}));
 // Add request logging
 app.use((req, res, next) => {
   console.log(`📨 ${req.method} ${req.path}`);
