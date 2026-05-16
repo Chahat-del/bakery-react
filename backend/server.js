@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -9,18 +8,15 @@ connectDB();
 
 const app = express();
 
-// Allow ALL origins for debugging
-const cors = require('cors');
-
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://bakery-react-28y3orfne-chahat-khandelwals-projects.vercel.app',
-    /\.vercel\.app$/  // allows all vercel preview URLs
+    'https://bakery-react-sandy.vercel.app',
+    /\.vercel\.app$/
   ],
   credentials: true
 }));
-// Add request logging
+
 app.use((req, res, next) => {
   console.log(`📨 ${req.method} ${req.path}`);
   next();
@@ -28,7 +24,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// routes
 app.get("/", (req, res) => {
   res.send("SweetCrumbs API is running 🍰");
 });
