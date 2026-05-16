@@ -9,13 +9,12 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://bakery-react-sandy.vercel.app',
-    /\.vercel\.app$/
-  ],
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.options('*', cors());
 
 app.use((req, res, next) => {
   console.log(`📨 ${req.method} ${req.path}`);
