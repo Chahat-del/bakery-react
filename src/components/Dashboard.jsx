@@ -9,7 +9,7 @@ export default function Dashboard() {
       <section className="dashboard">
         <div className="container">
           <h2>Order Dashboard</h2>
-          <p>You must be logged in to view personalized details.</p>
+          <p>You must be logged in to view personalized details, kindly login </p>
         </div>
       </section>
     );
