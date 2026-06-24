@@ -5,26 +5,43 @@ import { useOrder } from "../OrderContext";
 import { useNavigate } from "react-router-dom";
 import OrderTracker from "./OrderTracker";
 
-// Derive a live delivery status from order age.
-// Orders are given a 30–60 min delivery window; we use 45 min as the
-// fallback estimate when we don't have the exact window stored.
-function getLiveStatus(createdAt, totalSeconds) {
-  const elapsed = Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000);
-  const window  = totalSeconds || 45 * 60; // default 45 min if unknown
-  const ratio   = elapsed / window;
+// ─────────────────────────────────────────────────────────────
+// For any order we compute the delivery window from createdAt.
+// Priority:
+//   1. If this is the activeOrder in context, use its exact totalSeconds + savedAt
+//   2. Otherwise fall back to a 45-min window starting at createdAt
+// ─────────────────────────────────────────────────────────────
+function getTrackerProps(order, activeOrder) {
+  let totalSeconds, startedAt;
 
-  if (elapsed <= 0)   return { label: "Order Placed",    color: "#9e9e9e", stage: "placed"   };
-  if (ratio < 0.25)   return { label: "Order Placed",    color: "#9e9e9e", stage: "placed"   };
-  if (ratio < 0.70)   return { label: "In Progress",     color: "#2196f3", stage: "progress" };
-  if (ratio < 1.0)    return { label: "Out for Delivery", color: "#ff9800", stage: "delivery" };
-  return               { label: "Delivered",             color: "#4caf50", stage: "done"     };
+  if (activeOrder && activeOrder.orderNumber === order.orderNumber) {
+    // Use the exact window we generated at payment time
+    totalSeconds = activeOrder.totalSeconds;
+    startedAt    = activeOrder.savedAt;
+  } else {
+    // Fallback: treat order as a 45-min window starting at createdAt
+    totalSeconds = 45 * 60;
+    startedAt    = new Date(order.createdAt).getTime();
+  }
+
+  const elapsed   = Math.floor((Date.now() - startedAt) / 1000);
+  const remaining = Math.max(0, totalSeconds - elapsed);
+  const ratio     = totalSeconds > 0 ? elapsed / totalSeconds : 1;
+
+  let status;
+  if (remaining <= 0)    status = { label: "Delivered",         color: "#4caf50" };
+  else if (ratio < 0.25) status = { label: "Order Placed",      color: "#9e9e9e" };
+  else if (ratio < 0.70) status = { label: "In Progress",       color: "#2196f3" };
+  else                   status = { label: "Out for Delivery",  color: "#ff9800" };
+
+  return { totalSeconds, startedAt, remaining, status };
 }
 
 export default function OrderHistory() {
-  const [orders,          setOrders         ] = useState([]);
-  const [loading,         setLoading        ] = useState(true);
-  const [selectedOrder,   setSelectedOrder  ] = useState(null);
-  const [showOrderDetails,setShowOrderDetails] = useState(false);
+  const [orders,           setOrders          ] = useState([]);
+  const [loading,          setLoading         ] = useState(true);
+  const [selectedOrder,    setSelectedOrder   ] = useState(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
   const { user }                    = useAuth();
   const { activeOrder, clearOrder } = useOrder();
@@ -59,27 +76,22 @@ export default function OrderHistory() {
 
   const printBill = () => window.print();
 
-  // ── Order Details / Bill view ──────────────────────────────
+  // ── Order Detail / Bill view ───────────────────────────────
   if (showOrderDetails && selectedOrder) {
-    // Check if this is the active (in-flight) order
-    const isActive     = activeOrder?.orderNumber === selectedOrder.orderNumber;
-    const totalSeconds = isActive ? activeOrder.totalSeconds : 45 * 60;
-    const remaining    = isActive
-      ? Math.max(0, totalSeconds - Math.floor((Date.now() - activeOrder.savedAt) / 1000))
-      : 0;
-    const liveStatus   = getLiveStatus(selectedOrder.createdAt, totalSeconds);
+    const { totalSeconds, remaining, status } = getTrackerProps(selectedOrder, activeOrder);
+    const isActiveOrder = activeOrder?.orderNumber === selectedOrder.orderNumber;
 
     return (
       <section className="cart" id="order-details">
         <div className="container">
 
-          {/* Live tracker inside detail view if order is still in flight */}
-          {isActive && remaining > 0 && (
+          {/* Show tracker whenever the order isn't delivered yet */}
+          {remaining > 0 && (
             <OrderTracker
               orderNumber={selectedOrder.orderNumber}
               totalSeconds={totalSeconds}
               remainingSeconds={remaining}
-              onDismiss={clearOrder}
+              onDismiss={isActiveOrder ? clearOrder : undefined}
             />
           )}
 
@@ -115,17 +127,12 @@ export default function OrderHistory() {
               </div>
               <div className="bill-row">
                 <span>Status:</span>
-                <span
-                  style={{
-                    background: liveStatus.color,
-                    color: "white",
-                    padding: "0.3rem 0.8rem",
-                    borderRadius: "20px",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
-                  }}
-                >
-                  {liveStatus.label}
+                <span style={{
+                  background: status.color, color: "white",
+                  padding: "0.3rem 0.8rem", borderRadius: "20px",
+                  fontSize: "0.85rem", fontWeight: "600",
+                }}>
+                  {status.label}
                 </span>
               </div>
             </div>
@@ -218,12 +225,8 @@ export default function OrderHistory() {
         ) : (
           <div className="orders-list">
             {orders.map((order) => {
-              const isActive = activeOrder?.orderNumber === order.orderNumber;
-              const totalSec = isActive ? activeOrder.totalSeconds : 45 * 60;
-              const remaining = isActive
-                ? Math.max(0, totalSec - Math.floor((Date.now() - activeOrder.savedAt) / 1000))
-                : 0;
-              const liveStatus = getLiveStatus(order.createdAt, totalSec);
+              const { totalSeconds, remaining, status } = getTrackerProps(order, activeOrder);
+              const isActiveOrder = activeOrder?.orderNumber === order.orderNumber;
 
               return (
                 <div key={order._id} className="order-card">
@@ -233,29 +236,24 @@ export default function OrderHistory() {
                       <p className="order-date">{formatDate(order.createdAt)}</p>
                     </div>
                     <div className="order-status">
-                      <span
-                        style={{
-                          background: liveStatus.color,
-                          color: "white",
-                          padding: "0.3rem 0.8rem",
-                          borderRadius: "20px",
-                          fontSize: "0.85rem",
-                          fontWeight: "600",
-                        }}
-                      >
-                        {liveStatus.label}
+                      <span style={{
+                        background: status.color, color: "white",
+                        padding: "0.3rem 0.8rem", borderRadius: "20px",
+                        fontSize: "0.85rem", fontWeight: "600",
+                      }}>
+                        {status.label}
                       </span>
                     </div>
                   </div>
 
-                  {/* Inline compact tracker for the active order */}
-                  {isActive && remaining > 0 && (
+                  {/* Show tracker inline for any order still in-flight */}
+                  {remaining > 0 && (
                     <div className="order-tracker-inline">
                       <OrderTracker
                         orderNumber={order.orderNumber}
-                        totalSeconds={totalSec}
+                        totalSeconds={totalSeconds}
                         remainingSeconds={remaining}
-                        onDismiss={clearOrder}
+                        onDismiss={isActiveOrder ? clearOrder : undefined}
                       />
                     </div>
                   )}
