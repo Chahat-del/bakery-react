@@ -2218,3 +2218,14 @@ body {
     flex: 0 0 45%;
   }
 }
+
+/* Inline tracker inside order-history card */
+.order-tracker-inline {
+  margin: 0.75rem 0;
+}
+
+.order-tracker-inline .order-tracker-card {
+  margin-bottom: 0;
+  box-shadow: none;
+  border-color: #ffd0c0;
+}
