@@ -156,7 +156,35 @@ export default function CartSection() {
     window.print();
   };
 
-  // Bill Component
+  //start//
+  const specialOffersStyles = {
+  specialOffersSection: {
+    background: 'linear-gradient(#ff9a9e, #fad0c4)',
+    padding: '15px',
+    margin: '20px 0',
+    color: 'black',
+    textAlign: 'center',
+    fontFamily: 'Arial',
+    borderRadius: '10px'
+  },
+  heading: {
+    fontSize: '20px',
+    marginBottom: '10px'
+  },
+  christmasText: {
+    fontSize: '16px',
+    margin: '5px 0',
+    color: 'darkred'
+  },
+  newYearText: {
+    fontSize: '16px',
+    margin: '5px 0',
+    color: 'darkgreen'
+  }
+};
+
+  //end//
+
   if (showBill && orderData) {
     return (
       <section className="cart" id="cart">
