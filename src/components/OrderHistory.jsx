@@ -22,7 +22,7 @@ export default function OrderHistory() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/order`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }

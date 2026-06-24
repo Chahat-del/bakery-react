@@ -1938,3 +1938,283 @@ body {
     border: 1px solid #ddd;
   }
 }
+
+
+/* ===========================================
+   ORDER TRACKER — Full Card (Bill Page)
+   =========================================== */
+.order-tracker-card {
+  background: linear-gradient(135deg, #fff7f3, #fff);
+  border: 2px solid #ffd0c0;
+  border-radius: 18px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 28px rgba(255, 107, 107, 0.12);
+}
+
+.tracker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tracker-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.tracker-order-num {
+  font-size: 0.85rem;
+  color: #888;
+  background: #f0f0f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+/* Progress bar */
+.tracker-progress-wrap {
+  height: 8px;
+  background: #ffe0d2;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+}
+
+.tracker-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b6b, #ffb347);
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+/* Stage steps */
+.tracker-stages {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.tracker-stages::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #ffe0d2;
+  z-index: 0;
+}
+
+.tracker-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+
+.tracker-stage.done,
+.tracker-stage.active {
+  opacity: 1;
+}
+
+.tracker-stage-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #ffe0d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+.tracker-stage.done .tracker-stage-icon {
+  border-color: #4caf50;
+  background: #f0fff4;
+}
+
+.tracker-stage.active .tracker-stage-icon {
+  border-color: #ff6b6b;
+  background: #fff0ee;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+  animation: pulse-ring 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15); }
+  50%       { box-shadow: 0 0 0 8px rgba(255, 107, 107, 0.08); }
+}
+
+.tracker-stage-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: #555;
+}
+
+.tracker-stage.active .tracker-stage-label {
+  color: #ff6b6b;
+}
+
+/* ETA countdown */
+.tracker-eta {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: #fff8f4;
+  border-radius: 12px;
+  border: 1px solid #ffd0c0;
+}
+
+.tracker-eta-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.25rem;
+}
+
+.tracker-eta-time {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+}
+
+.tracker-delivered {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #4caf50;
+  margin: 0;
+}
+
+.tracker-dismiss {
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.tracker-dismiss:hover {
+  color: #ff6b6b;
+}
+
+/* ===========================================
+   ORDER TRACKER — Floating Compact Banner
+   =========================================== */
+.order-tracker-banner {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  animation: slide-up 0.4s ease;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tracker-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border: 2px solid #ffd0c0;
+  border-radius: 16px;
+  padding: 0.9rem 1.1rem;
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.2);
+  min-width: 240px;
+  max-width: 320px;
+}
+
+.tracker-banner-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.tracker-banner-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.tracker-banner-text strong {
+  font-size: 0.85rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tracker-banner-text span {
+  font-size: 0.8rem;
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.tracker-banner-time {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.tracker-banner-close {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.tracker-banner-close:hover {
+  color: #ff6b6b;
+}
+
+@media (max-width: 480px) {
+  .order-tracker-banner {
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+
+  .tracker-banner-inner {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+  }
+
+  .tracker-stages {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tracker-stages::before {
+    display: none;
+  }
+
+  .tracker-stage {
+    flex: 0 0 45%;
+  }
+}

@@ -1,17 +1,19 @@
 // src/components/CartSection.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useAuth } from "../AuthContext";
+import { useOrder } from "../OrderContext";
 import PaymentGateway from "./PaymentGateway";
 import OrderTracker from "./OrderTracker";
 
 // API Base URL
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-export default function CartSection({ onNewOrder }) {
+export default function CartSection() {
   const { items, total, removeFromCart, clearCart, updateQuantity } = useCart();
   const { user } = useAuth();
+  const { startOrder } = useOrder();
   const navigate = useNavigate();
 
   const [showCheckout, setShowCheckout] = useState(false);
@@ -144,8 +146,8 @@ export default function CartSection({ onNewOrder }) {
         clearCart();
         setAppliedCoupon(null);
 
-        // Notify App.jsx so tracker shows on all pages
-        if (onNewOrder) onNewOrder(data.order.orderNumber, deliverySeconds);
+        // Register order in global context so tracker shows on all pages
+        startOrder(data.order.orderNumber, deliverySeconds);
 
       } else {
         alert(data.message || "Order failed!");
