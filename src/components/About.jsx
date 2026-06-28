@@ -8,7 +8,7 @@ export default function About() {
         <p>
           We are a neighborhood bakery specialising in freshly baked breads,
           cakes and pastries. Every batch is made with high quality ingredients
-          and a lot of love.Give it a try.
+          and a lot of love.Give it a try soon.
         </p>
       </div>
     </section>
